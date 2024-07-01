@@ -2,6 +2,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 import datetime
+import random
 
 from users import UserDatabase
 
@@ -78,10 +79,11 @@ async def wishbirthday(interaction : discord.Interaction, username : str, users 
     info = users.get_birthday(username)
     if users.user_name_exists(username):
         if is_today(datetime.datetime(2024, info[0], info[1])):
+            random_number = random.randint(1, 15)
             result_description = f'{interaction.user.mention} wished a Happy Birthday to <@{users.get_id(username, info[0], info[1])}> '
             embed = discord.Embed(description=result_description, color=0xFF5733)
-            file = discord.File('images/icon.png', filename='icon.png')
-            embed.set_thumbnail(url='attachment://icon.png')
+            file = discord.File(f'images/birthday_gifs/image_{random_number}.gif', filename= f'image_{random_number}.gif')
+            embed.set_image(url=f'attachment://image_{random_number}.gif')
             embed.set_author(name="Birthday-Bot says:")
             embed.set_footer(text="/wishbirthday")
             await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
