@@ -30,8 +30,38 @@ async def addbirthday(interaction : discord.Interaction, birthday_month : str, b
             "november": 11, 
             "december": 12
         }
+        error = False
 
-        users.insert_user(int(interaction.user.id), month_mapping.get(birthday_month.lower()), int(birthday_day), int(birthday_year))
+        def is_valid_date(year, month, day):
+            try:
+                date = datetime.datetime(int(year), month, int(day))
+                return True
+            except ValueError:
+                return False
+            
+        if month_mapping.get(birthday_month.lower()) is None:
+            result_title = f'**ERROR**'
+            result_description = f'ERROR HAS OCCURRED. PLEASE TRY AGAIN**'
+            embed = discord.Embed(title=result_title, description=result_description, color=0xFF5733)
+            file = discord.File('images/icon.png', filename='icon.png')
+            embed.set_thumbnail(url='attachment://icon.png')
+            embed.set_author(name="Birthday-Bot says:")
+            embed.set_footer(text="/addbirthday")
+            await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+            return
+
+        if not is_valid_date(birthday_year, month_mapping.get(birthday_month.lower()), birthday_day):
+            result_title = f'**ERROR**'
+            result_description = f'ERROR HAS OCCURRED. PLEASE TRY AGAIN**'
+            embed = discord.Embed(title=result_title, description=result_description, color=0xFF5733)
+            file = discord.File('images/icon.png', filename='icon.png')
+            embed.set_thumbnail(url='attachment://icon.png')
+            embed.set_author(name="Birthday-Bot says:")
+            embed.set_footer(text="/addbirthday")
+            await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+            return
+        
+        users.insert_user(int(interaction.user.id), str(interaction.user), month_mapping.get(birthday_month.lower()), int(birthday_day), int(birthday_year))
         result_title = f'**User Created**'
         result_description = f'User created for **{interaction.user.mention}**'
         embed = discord.Embed(title=result_title, description=result_description, color=0xFF5733)
@@ -39,6 +69,40 @@ async def addbirthday(interaction : discord.Interaction, birthday_month : str, b
         embed.set_thumbnail(url='attachment://icon.png')
         embed.set_author(name="Birthday-Bot says:")
         embed.set_footer(text="/addbirthday")
+        await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+
+async def wishbirthday(interaction : discord.Interaction, username : str, users : UserDatabase):
+    def is_today(date):
+        today = datetime.datetime.today()
+        return date.year == today.year and date.month == today.month and date.day == today.day
+    info = users.get_birthday(username)
+    if users.user_name_exists(username):
+        if is_today(datetime.datetime(2024, info[0], info[1])):
+            result_description = f'{interaction.user.mention} wished a Happy Birthday to <@{users.get_id(username, info[0], info[1])}> '
+            embed = discord.Embed(description=result_description, color=0xFF5733)
+            file = discord.File('images/icon.png', filename='icon.png')
+            embed.set_thumbnail(url='attachment://icon.png')
+            embed.set_author(name="Birthday-Bot says:")
+            embed.set_footer(text="/wishbirthday")
+            await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+        else:
+            result_title = f'**ERROR**'
+            result_description = f'USER **{username}\'s** BIRTHDAY IS NOT TODAY'
+            embed = discord.Embed(title=result_title, description=result_description, color=0xFF5733)
+            file = discord.File('images/icon.png', filename='icon.png')
+            embed.set_thumbnail(url='attachment://icon.png')
+            embed.set_author(name="Birthday-Bot says:")
+            embed.set_footer(text="/wishbirthday")
+            await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+
+    else:
+        result_title = f'**ERROR**'
+        result_description = f'USER **{username}** DOES NOT EXIST IN DATABASE'
+        embed = discord.Embed(title=result_title, description=result_description, color=0xFF5733)
+        file = discord.File('images/icon.png', filename='icon.png')
+        embed.set_thumbnail(url='attachment://icon.png')
+        embed.set_author(name="Birthday-Bot says:")
+        embed.set_footer(text="/wishbirthday")
         await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
 
 async def removebirthday(interaction : discord.Interaction, users : UserDatabase):

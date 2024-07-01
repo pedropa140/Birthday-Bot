@@ -10,6 +10,7 @@ class UserDatabase:
         self.cursor.execute('''
         CREATE TABLE IF NOT EXISTS Users (
             UserID TEXT PRIMARY KEY,
+            UserName TEXT,
             Month INTEGER,
             Day INTEGER,
             Year INTEGER
@@ -17,18 +18,35 @@ class UserDatabase:
         ''')
         self.conn.commit()
 
-    def insert_user(self, userid, month, day, year):
-        self.cursor.execute('INSERT INTO Users (UserID, Month, Day, Year) VALUES (?, ?, ?, ?)', (userid, month, day, year))
+    def insert_user(self, userid, username, month, day, year):
+        self.cursor.execute('INSERT INTO Users (UserID, UserName, Month, Day, Year) VALUES (?, ?, ?, ?, ?)', (userid, username, month, day, year))
         self.conn.commit()
 
     def retrieve_users(self):
         self.cursor.execute("SELECT UserID FROM Users")
         return self.cursor.fetchall()
     
+    def retrieve_all(self):
+        self.cursor.execute("SELECT UserID, UserName, Month, Day, Year FROM Users")
+        return self.cursor.fetchall()
+    
     def user_exists(self, userid):
         self.cursor.execute("SELECT COUNT(*) FROM users WHERE UserID=?", (userid,))
         count = self.cursor.fetchone()[0]
         return count > 0
+    
+    def user_name_exists(self, username):
+        self.cursor.execute("SELECT COUNT(*) FROM users WHERE UserName=?", (username,))
+        count = self.cursor.fetchone()[0]
+        return count > 0
+    
+    def get_birthday(self, username):
+        self.cursor.execute('SELECT Month, Day FROM Users WHERE UserName = ?', (username,))
+        return self.cursor.fetchone()
+    
+    def get_id(self, username, month, day):
+        self.cursor.execute('SELECT UserId FROM Users WHERE Username = ? AND Month = ? AND Day = ?', (username, month, day))
+        return self.cursor.fetchone()[0]
     
     def remove_user(self, userid):
         self.cursor.execute('DELETE FROM Users WHERE UserID = ?', (userid,))
