@@ -30,8 +30,8 @@ class UserDatabase:
         count = self.cursor.fetchone()[0]
         return count > 0
     
-    def remove_user(self, user_id):
-        self.cursor.execute('DELETE FROM Users WHERE UserID = ?', (user_id))
+    def remove_user(self, userid):
+        self.cursor.execute('DELETE FROM Users WHERE UserID = ?', (userid,))
         self.conn.commit()
 
     def close(self):

@@ -41,11 +41,18 @@ def run_discord_bot():
 
         await response.addbirthday(interaction, birthday_month, birthday_day, birthday_year, usersDatabase)
         
-
     # wish birthday [username]
 
     # delete user 
+    @bot.tree.command(name = "removebirthday", description = "Removes a Birthday from the Database!")
+    async def removebirthday(interaction : discord.Interaction):
+        username = str(interaction.user)
+        mention = str(interaction.user.mention)
+        user_message = str(interaction.command.name)
+        channel = str(interaction.channel)
+        print(f'{username} ({mention}) said: "{user_message}" ({channel})')
 
+        await response.removebirthday(interaction, usersDatabase)
 
     bot.run(TOKEN)
     

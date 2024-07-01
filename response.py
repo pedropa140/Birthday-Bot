@@ -40,3 +40,24 @@ async def addbirthday(interaction : discord.Interaction, birthday_month : str, b
         embed.set_author(name="Birthday-Bot says:")
         embed.set_footer(text="/addbirthday")
         await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+
+async def removebirthday(interaction : discord.Interaction, users : UserDatabase):
+    if not users.user_exists(interaction.user.id):
+        result_title = f'User Not Found'
+        result_description = f'User not found for **{interaction.user.mention}**'
+        embed = discord.Embed(title=result_title, description=result_description, color=0xFF5733)
+        file = discord.File('images/icon.png', filename='icon.png')
+        embed.set_thumbnail(url='attachment://icon.png')
+        embed.set_author(name="Birthday-Bot says:")
+        embed.set_footer(text="/removebirthday")
+        await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+    else:
+        users.remove_user(interaction.user.id)
+        result_title = f'**User Deleted**'
+        result_description = f'User deleted for **{interaction.user.mention}**'
+        embed = discord.Embed(title=result_title, description=result_description, color=0xFF5733)
+        file = discord.File('images/icon.png', filename='icon.png')
+        embed.set_thumbnail(url='attachment://icon.png')
+        embed.set_author(name="Birthday-Bot says:")
+        embed.set_footer(text="/removebirthday")
+        await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
