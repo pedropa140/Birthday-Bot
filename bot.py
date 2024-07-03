@@ -29,17 +29,11 @@ def run_discord_bot():
             print(f'Synced {len(synced)} command(s)')
             
             print(f'{bot.user} is now running!')
-            bot.loop.create_task(ping_at_specific_time(bot, usersDatabase))
-        # user = interaction.user
-        # user_guilds = [guild for guild in bot.guilds if guild.get_member(user.id)]
-        # if user_guilds:
-        #     await interaction.response.send_message(f'You are in the following servers: {", ".join(guild.name for guild in user_guilds)}')
-        # else:
-        #     await interaction.response.send_message('You are not in any of the same servers as the bot.')
+            bot.loop.create_task(happybirthday(bot, usersDatabase))
         except Exception as e:
             print(e)
 
-    async def ping_at_specific_time(bot : commands.Bot, userDatabase : UserDatabase):
+    async def happybirthday(bot : commands.Bot, userDatabase : UserDatabase):
         while True:
             users_list = []
             for user in usersDatabase.retrieve_users():
@@ -77,7 +71,7 @@ def run_discord_bot():
                             send_message = bot.get_guild(guild[1]).get_channel(guild[2])
                             if send_message:
                                 random_number = random.randint(1, 15)
-                                title = f'Happy Birthday to <@{user}>!'
+                                title = f'Happy Birthday to <@{member.id}> !'
                                 embed = discord.Embed(title=title, color=0xFF5733)
                                 file = discord.File(f'images/birthday_gifs/image_{random_number}.gif', filename= f'image_{random_number}.gif')
                                 embed.set_image(url=f'attachment://image_{random_number}.gif')
@@ -85,7 +79,7 @@ def run_discord_bot():
                                 embed.set_footer(text="/happybirthday")
                                 await send_message.send(file=file, embed=embed)
 
-            time.sleep(86400)
+            await asyncio.sleep(86400)
 
     @bot.tree.command(name = "addbirthday", description = "Adds Birthday to the Database!")
     @app_commands.describe(birthday_month = "Enter Birthday Month (e.g. January)", birthday_day = "Enter Birthday Day (e.g. 19)", birthday_year = "Enter Birthday Year (e.g. 1994)")
@@ -119,7 +113,15 @@ def run_discord_bot():
         
         await response.removebirthday(interaction, usersDatabase)
 
-    # help command comming soon
+    @bot.tree.command(name = "help", description = "Shows how to use Birthday-Bot and how to set it up!")
+    async def help(interaction : discord.Interaction):
+        username = str(interaction.user)
+        mention = str(interaction.user.mention)
+        user_message = str(interaction.command.name)
+        channel = str(interaction.channel)
+        print(f'{username} ({mention}) said: "{user_message}" ({channel})')
+        
+        await response.help(interaction)
 
     bot.run(TOKEN)
     

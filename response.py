@@ -15,7 +15,7 @@ async def addbirthday(interaction : discord.Interaction, birthday_month : str, b
         embed.set_thumbnail(url='attachment://icon.png')
         embed.set_author(name="Birthday-Bot says:")
         embed.set_footer(text="/addbirthday")
-        await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+        await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
     else:
         month_mapping = {
             "january": 1, 
@@ -48,7 +48,7 @@ async def addbirthday(interaction : discord.Interaction, birthday_month : str, b
             embed.set_thumbnail(url='attachment://icon.png')
             embed.set_author(name="Birthday-Bot says:")
             embed.set_footer(text="/addbirthday")
-            await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+            await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
             return
 
         if not is_valid_date(birthday_year, month_mapping.get(birthday_month.lower()), birthday_day):
@@ -59,7 +59,7 @@ async def addbirthday(interaction : discord.Interaction, birthday_month : str, b
             embed.set_thumbnail(url='attachment://icon.png')
             embed.set_author(name="Birthday-Bot says:")
             embed.set_footer(text="/addbirthday")
-            await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+            await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
             return
         
         users.insert_user(int(interaction.user.id), str(interaction.user), month_mapping.get(birthday_month.lower()), int(birthday_day), int(birthday_year))
@@ -70,7 +70,7 @@ async def addbirthday(interaction : discord.Interaction, birthday_month : str, b
         embed.set_thumbnail(url='attachment://icon.png')
         embed.set_author(name="Birthday-Bot says:")
         embed.set_footer(text="/addbirthday")
-        await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+        await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
 
 async def wishbirthday(interaction : discord.Interaction, username : str, users : UserDatabase):
     def is_today(date):
@@ -96,7 +96,7 @@ async def wishbirthday(interaction : discord.Interaction, username : str, users 
             embed.set_thumbnail(url='attachment://icon.png')
             embed.set_author(name="Birthday-Bot says:")
             embed.set_footer(text="/wishbirthday")
-            await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+            await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
 
     else:
         result_title = f'**ERROR**'
@@ -106,7 +106,7 @@ async def wishbirthday(interaction : discord.Interaction, username : str, users 
         embed.set_thumbnail(url='attachment://icon.png')
         embed.set_author(name="Birthday-Bot says:")
         embed.set_footer(text="/wishbirthday")
-        await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+        await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
 
 async def removebirthday(interaction : discord.Interaction, users : UserDatabase):
     if not users.user_exists(interaction.user.id):
@@ -117,7 +117,7 @@ async def removebirthday(interaction : discord.Interaction, users : UserDatabase
         embed.set_thumbnail(url='attachment://icon.png')
         embed.set_author(name="Birthday-Bot says:")
         embed.set_footer(text="/removebirthday")
-        await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+        await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
     else:
         users.remove_user(interaction.user.id)
         result_title = f'**User Deleted**'
@@ -127,4 +127,16 @@ async def removebirthday(interaction : discord.Interaction, users : UserDatabase
         embed.set_thumbnail(url='attachment://icon.png')
         embed.set_author(name="Birthday-Bot says:")
         embed.set_footer(text="/removebirthday")
-        await interaction.response.send_message(file=file, embed=embed, ephemeral=False)
+        await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
+
+async def help(interaction : discord.Interaction):
+    result_title = f'How to use Reminder-Bot'
+    embed = discord.Embed(title=result_title, url = "https://github.com/pedropa140/Reminder-Bot", color=0xFF5733)
+    file = discord.File('images/icon.png', filename='icon.png')
+    embed.set_thumbnail(url='attachment://icon.png')
+    embed.set_author(name="Birthday-Bot says:")
+    embed.add_field(name="/addbirthday **[Month]** **[Day]** **[Year]** ", value="Adds Birthday to the Database!", inline=False)
+    embed.add_field(name="/wishbirthday **[Discord User]**", value="Wish a Someone a Happy Birthday!", inline=False)
+    embed.add_field(name="/removebirthday", value="Removes a Birthday from the Database!", inline=False)
+    embed.set_footer(text="/help")
+    await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
