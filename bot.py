@@ -23,11 +23,12 @@ def run_discord_bot():
     
     @bot.event
     async def on_ready():
-        print(f'{bot.user} is now running!')
         try:
             synced = await bot.tree.sync()
             print(f'Synced {synced} command(s)')
             print(f'Synced {len(synced)} command(s)')
+            
+            print(f'{bot.user} is now running!')
             bot.loop.create_task(ping_at_specific_time(bot, usersDatabase))
         # user = interaction.user
         # user_guilds = [guild for guild in bot.guilds if guild.get_member(user.id)]
@@ -55,25 +56,36 @@ def run_discord_bot():
                     file = discord.File(f'images/birthday_gifs/image_{random_number}.gif', filename= f'image_{random_number}.gif')
                     embed.set_image(url=f'attachment://image_{random_number}.gif')
                     embed.set_author(name="Birthday-Bot says:")
-                    embed.set_footer(text="/wishbirthday")
+                    embed.set_footer(text="/happybirthday")
 
                     send_message = await bot.fetch_user(user)
                     await send_message.send(file=file, embed=embed)
+                
+                    user_guilds = []
+                    user = int(user)
 
-                    # random_number = random.randint(1, 15)
-                    # title = f'Happy Birthday to <@{user}>!'
-                    # embed = discord.Embed(title=title, color=0xFF5733)
-                    # file = discord.File(f'images/birthday_gifs/image_{random_number}.gif', filename= f'image_{random_number}.gif')
-                    # embed.set_image(url=f'attachment://image_{random_number}.gif')
-                    # embed.set_author(name="Birthday-Bot says:")
-                    # embed.set_footer(text="/wishbirthday")
+                    for guild in bot.guilds:
+                        member = guild.get_member(user)
+                        if guild:
+                            for channel in guild.channels:
+                                if channel.name.lower() == 'birthday-bot' and str(channel.type).lower() == 'text':
+                                    if member:
+                                        user_guilds.append([guild, guild.id, channel.id])
+                    
+                    if user_guilds:
+                        for guild in user_guilds:
+                            send_message = bot.get_guild(guild[1]).get_channel(guild[2])
+                            if send_message:
+                                random_number = random.randint(1, 15)
+                                title = f'Happy Birthday to <@{user}>!'
+                                embed = discord.Embed(title=title, color=0xFF5733)
+                                file = discord.File(f'images/birthday_gifs/image_{random_number}.gif', filename= f'image_{random_number}.gif')
+                                embed.set_image(url=f'attachment://image_{random_number}.gif')
+                                embed.set_author(name="Birthday-Bot says:")
+                                embed.set_footer(text="/happybirthday")
+                                await send_message.send(file=file, embed=embed)
 
-                    # send_message = await bot.fetch_user(user)
-                    # await send_message.send(file=file, embed=embed)
-
-            # time.sleep(86400)
-            
-            await asyncio.sleep(30)
+            time.sleep(86400)
 
     @bot.tree.command(name = "addbirthday", description = "Adds Birthday to the Database!")
     @app_commands.describe(birthday_month = "Enter Birthday Month (e.g. January)", birthday_day = "Enter Birthday Day (e.g. 19)", birthday_year = "Enter Birthday Year (e.g. 1994)")
@@ -106,6 +118,8 @@ def run_discord_bot():
         print(f'{username} ({mention}) said: "{user_message}" ({channel})')
         
         await response.removebirthday(interaction, usersDatabase)
+
+    # help command comming soon
 
     bot.run(TOKEN)
     
