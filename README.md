@@ -4,10 +4,10 @@
 
 <div align=center>
 <img src="images/icon.png" alt="icon.png" width="200" height="200">
-<h1>Reminder-Bot</h1>
+<h1>Birthday-Bot</h1>
   
 ## Description
-Reminder-Bot is a Discord bot that allows users to keep track of what tasks they have throughout the week or even today. In addition, if the user is in the database, it tells you what tasks you planned on that given day by sending you a direct message. This bot uses a database coded in SQL and keeps track of the user and their preference when they want to be messaged in the morning. In addition, it keeps track of the user's task and if they are completed or not.
+
 </div>
 
 
@@ -17,13 +17,13 @@ Reminder-Bot is a Discord bot that allows users to keep track of what tasks they
 
 </div>
 
-Not interested in downloading bot to your computer, you can add bot to your server [here](https://discord.com/oauth2/authorize?client_id=1214322771765497916&permissions=21983791152192&scope=bot)
+Not interested in downloading bot to your computer, you can add bot to your server [here](https://discord.com/oauth2/authorize?client_id=1257414324025032826&permissions=1147883697994816&integration_type=0&scope=bot)
 
 Follow these steps to run the Discord application and add it to your server.
-1. If you are *not* an author, fork the repository [here](https://github.com/pedropa140/Reminder-Bot/fork).
+1. If you are *not* an author, fork the repository [here](https://github.com/pedropa140/Birthday-Bot/fork).
 2. Clone the repository.
     ```bash
-    git clone https://github.com/pedropa140/Reminder-Bot.git
+    git clone https://github.com/pedropa140/Birthday-Bot
     ```
 
 3. Install Dependencies
@@ -87,7 +87,7 @@ Follow these steps to run the Discord application and add it to your server.
         
 <div align=center>   
   
-## How to run the Reminder-Bot
+## How to run the Birthday-Bot
 
 In a terminal, find the directory where main.py is located and run this command:
 </div>
