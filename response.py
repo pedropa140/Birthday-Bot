@@ -76,7 +76,8 @@ async def wishbirthday(interaction : discord.Interaction, username : str, users 
     def is_today(date):
         today = datetime.datetime.today()
         return date.year == today.year and date.month == today.month and date.day == today.day
-    info = users.get_birthday(username)
+    info = users.get_birthday_via_username(username)
+    print(info)
     if users.user_name_exists(username):
         if is_today(datetime.datetime(2024, info[0], info[1])):
             random_number = random.randint(1, 15)

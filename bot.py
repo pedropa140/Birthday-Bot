@@ -10,6 +10,7 @@ import datetime
 
 import response
 from users import UserDatabase
+import time
 
 load_dotenv()
 
@@ -27,6 +28,7 @@ def run_discord_bot():
             synced = await bot.tree.sync()
             print(f'Synced {synced} command(s)')
             print(f'Synced {len(synced)} command(s)')
+            bot.loop.create_task(ping_at_specific_time(bot, usersDatabase))
         # user = interaction.user
         # user_guilds = [guild for guild in bot.guilds if guild.get_member(user.id)]
         # if user_guilds:
@@ -34,7 +36,44 @@ def run_discord_bot():
         # else:
         #     await interaction.response.send_message('You are not in any of the same servers as the bot.')
         except Exception as e:
-            print(e)        
+            print(e)
+
+    async def ping_at_specific_time(bot : commands.Bot, userDatabase : UserDatabase):
+        while True:
+            users_list = []
+            for user in usersDatabase.retrieve_users():
+                users_list.append(user[0])
+            date = datetime.datetime.today()
+            
+            for user in users_list:
+                user_info = userDatabase.get_birthday_via_id(user)
+                if date.month == user_info[0] and date.day == user_info[1]:
+                    random_number = random.randint(1, 15)
+                    age = date.year - user_info[2]
+                    title = f'Happy Birthday to You! Congrats on being {age}!'
+                    embed = discord.Embed(title=title, color=0xFF5733)
+                    file = discord.File(f'images/birthday_gifs/image_{random_number}.gif', filename= f'image_{random_number}.gif')
+                    embed.set_image(url=f'attachment://image_{random_number}.gif')
+                    embed.set_author(name="Birthday-Bot says:")
+                    embed.set_footer(text="/wishbirthday")
+
+                    send_message = await bot.fetch_user(user)
+                    await send_message.send(file=file, embed=embed)
+
+                    # random_number = random.randint(1, 15)
+                    # title = f'Happy Birthday to <@{user}>!'
+                    # embed = discord.Embed(title=title, color=0xFF5733)
+                    # file = discord.File(f'images/birthday_gifs/image_{random_number}.gif', filename= f'image_{random_number}.gif')
+                    # embed.set_image(url=f'attachment://image_{random_number}.gif')
+                    # embed.set_author(name="Birthday-Bot says:")
+                    # embed.set_footer(text="/wishbirthday")
+
+                    # send_message = await bot.fetch_user(user)
+                    # await send_message.send(file=file, embed=embed)
+
+            # time.sleep(86400)
+            
+            await asyncio.sleep(30)
 
     @bot.tree.command(name = "addbirthday", description = "Adds Birthday to the Database!")
     @app_commands.describe(birthday_month = "Enter Birthday Month (e.g. January)", birthday_day = "Enter Birthday Day (e.g. 19)", birthday_year = "Enter Birthday Year (e.g. 1994)")

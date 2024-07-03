@@ -40,8 +40,12 @@ class UserDatabase:
         count = self.cursor.fetchone()[0]
         return count > 0
     
-    def get_birthday(self, username):
+    def get_birthday_via_username(self, username):
         self.cursor.execute('SELECT Month, Day FROM Users WHERE UserName = ?', (username,))
+        return self.cursor.fetchone()
+    
+    def get_birthday_via_id(self, userid):
+        self.cursor.execute('SELECT Month, Day, Year FROM Users WHERE UserID = ?', (userid,))
         return self.cursor.fetchone()
     
     def get_id(self, username, month, day):
