@@ -45,7 +45,14 @@ def run_discord_bot():
                 if date.month == user_info[0] and date.day == user_info[1]:
                     random_number = random.randint(1, 15)
                     age = date.year - user_info[2]
-                    title = f'Happy Birthday to You! Congrats on being {age}!'
+                    def get_ordinal(n):
+                        if 10 <= n % 100 <= 20:
+                            suffix = 'th'
+                        else:
+                            suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
+                        return str(n) + suffix
+                    age = str(get_ordinal(age))
+                    title = f'Happy Birthday to You! Congrats on your {age} Birthday!'
                     embed = discord.Embed(title=title, color=0xFF5733)
                     file = discord.File(f'images/birthday_gifs/image_{random_number}.gif', filename= f'image_{random_number}.gif')
                     embed.set_image(url=f'attachment://image_{random_number}.gif')
@@ -71,8 +78,8 @@ def run_discord_bot():
                             send_message = bot.get_guild(guild[1]).get_channel(guild[2])
                             if send_message:
                                 random_number = random.randint(1, 15)
-                                title = f'Happy Birthday to <@{member.id}> !'
-                                embed = discord.Embed(title=title, color=0xFF5733)
+                                title = f'***Happy Birthday to <@{member.id}> !***'
+                                embed = discord.Embed(description=title, color=0xFF5733)
                                 file = discord.File(f'images/birthday_gifs/image_{random_number}.gif', filename= f'image_{random_number}.gif')
                                 embed.set_image(url=f'attachment://image_{random_number}.gif')
                                 embed.set_author(name="Birthday-Bot says:")
@@ -94,7 +101,7 @@ def run_discord_bot():
         
     @bot.tree.command(name = "wishbirthday", description = "Wish a Someone a Happy Birthday!")
     @app_commands.describe(discord_user = "Enter Discord Username")
-    async def wishbirthday(interaction : discord.Interaction, discord_user : str):
+    async def wishbirthday(interaction : discord.Interaction, discord_user : discord.Member):
         username = str(interaction.user)
         mention = str(interaction.user.mention)
         user_message = str(interaction.command.name)

@@ -72,12 +72,12 @@ async def addbirthday(interaction : discord.Interaction, birthday_month : str, b
         embed.set_footer(text="/addbirthday")
         await interaction.response.send_message(file=file, embed=embed, ephemeral=True)
 
-async def wishbirthday(interaction : discord.Interaction, username : str, users : UserDatabase):
+async def wishbirthday(interaction : discord.Interaction, username : discord.Member, users : UserDatabase):
     def is_today(date):
         today = datetime.datetime.today()
         return date.year == today.year and date.month == today.month and date.day == today.day
+    username = str(username)
     info = users.get_birthday_via_username(username)
-    print(info)
     if users.user_name_exists(username):
         if is_today(datetime.datetime(2024, info[0], info[1])):
             random_number = random.randint(1, 15)
