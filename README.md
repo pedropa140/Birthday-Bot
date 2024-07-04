@@ -5,10 +5,9 @@
 <div align=center>
 <img src="images/icon.png" alt="icon.png" width="200" height="200">
 <h1>Birthday-Bot</h1>
-Birthday-Bot is a delightful Discord bot designed to bring joy to your server by keeping track of members' birthdays and ensuring no special day goes unnoticed. With Birthday-Bot, you can celebrate your friends and fellow server members by receiving timely notifications, personalized messages, and fun birthday-related activities.
 
 ## Description
-
+Birthday-Bot is a delightful Discord bot designed to bring joy to your server by keeping track of members' birthdays and ensuring no special day goes unnoticed. With Birthday-Bot, you can celebrate your friends and fellow server members by receiving timely notifications, personalized messages, and fun birthday-related activities.
 </div>
 
 
