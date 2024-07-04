@@ -5,7 +5,7 @@
 <div align=center>
 <img src="images/icon.png" alt="icon.png" width="200" height="200">
 <h1>Birthday-Bot</h1>
-  
+Birthday-Bot is a delightful Discord bot designed to bring joy to your server by keeping track of members' birthdays and ensuring no special day goes unnoticed. With Birthday-Bot, you can celebrate your friends and fellow server members by receiving timely notifications, personalized messages, and fun birthday-related activities.
 ## Description
 
 </div>
@@ -84,6 +84,8 @@ Follow these steps to run the Discord application and add it to your server.
             
       - Copy the **Generated URL** and paste it in your web browser.
       - Click on the Discord server you would like to add the bot into.
+      - In your server, please create a text channel called #Birthday-Bot so the bot can enter messages in.
+      - Have fun!
         
 <div align=center>   
   
@@ -97,4 +99,11 @@ In a terminal, find the directory where main.py is located and run this command:
   ```
 
 ### Options:
-  
+  - **/addbirthday [BIRTH_MONTH] [BIRTH_DAY] [BIRH_YEAR]**
+    - Adds Birthday to the Database!
+  - **/wishbirthday [DISCORD_USERNAME]**
+    - Wish a Someone a Happy Birthday!
+  - **/removebirthday**
+    - Removes a Birthday from the Database!
+  - **/help**
+    - Shows how to use Birthday-Bot and how to set it up!
